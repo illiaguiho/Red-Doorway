@@ -1,0 +1,6 @@
+2026-10-16  Phase 0
+  - Add-on: export a material's node tree as JSON IR (groups inlined,
+    reroutes and muted nodes resolved, dependency order).
+  - Headless CLI exporter and extraction tests (Blender 5.1).
+  - Reference "Stripes" material with a hand-written Blurres surface shader.
+  - glslang-based validator for Blurres surface shaders.
