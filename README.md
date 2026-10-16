@@ -7,7 +7,7 @@ Name: Red Doorway*
 ## Description
 
 A Blender add-on that turns material node trees into shader code for game
-engines: GLSL (Blurres, OpenGL), HLSL (Unity, Unreal, DirectX) and Godot
+engines: GLSL (Blurres (my own game engine), OpenGL), HLSL (Unity, Unreal, DirectX) and Godot
 shading language.
 
 It doesn't try to reproduce Cycles or EEVEE lighting. A material is compiled
