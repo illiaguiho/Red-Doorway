@@ -1,0 +1,690 @@
+{
+  "format": "blender-shader-ir",
+  "version": 0,
+  "blender_version": "5.1.1",
+  "material": {
+    "name": "Stripes",
+    "settings": {
+      "use_backface_culling": false,
+      "surface_render_method": "DITHERED",
+      "blend_method": "HASHED",
+      "alpha_threshold": 0.5,
+      "use_transparency_overlap": true
+    }
+  },
+  "output": "Material Output",
+  "nodes": [
+    {
+      "key": "Texture Coordinate",
+      "type": "ShaderNodeTexCoord",
+      "name": "Texture Coordinate",
+      "label": "",
+      "props": {
+        "object": null,
+        "from_instancer": false
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "Generated",
+          "identifier": "Generated",
+          "type": "VECTOR"
+        },
+        {
+          "name": "Normal",
+          "identifier": "Normal",
+          "type": "VECTOR"
+        },
+        {
+          "name": "UV",
+          "identifier": "UV",
+          "type": "VECTOR"
+        },
+        {
+          "name": "Object",
+          "identifier": "Object",
+          "type": "VECTOR"
+        },
+        {
+          "name": "Camera",
+          "identifier": "Camera",
+          "type": "VECTOR"
+        },
+        {
+          "name": "Window",
+          "identifier": "Window",
+          "type": "VECTOR"
+        },
+        {
+          "name": "Reflection",
+          "identifier": "Reflection",
+          "type": "VECTOR"
+        }
+      ]
+    },
+    {
+      "key": "Mapping",
+      "type": "ShaderNodeMapping",
+      "name": "Mapping",
+      "label": "",
+      "props": {
+        "vector_type": "POINT"
+      },
+      "inputs": [
+        {
+          "name": "Vector",
+          "identifier": "Vector",
+          "type": "VECTOR",
+          "node": "Texture Coordinate",
+          "output": "UV",
+          "from_type": "VECTOR"
+        },
+        {
+          "name": "Location",
+          "identifier": "Location",
+          "type": "VECTOR",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Rotation",
+          "identifier": "Rotation",
+          "type": "VECTOR",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Scale",
+          "identifier": "Scale",
+          "type": "VECTOR",
+          "value": [
+            8.0,
+            8.0,
+            1.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Vector",
+          "identifier": "Vector",
+          "type": "VECTOR"
+        }
+      ]
+    },
+    {
+      "key": "Separate XYZ",
+      "type": "ShaderNodeSeparateXYZ",
+      "name": "Separate XYZ",
+      "label": "",
+      "props": {},
+      "inputs": [
+        {
+          "name": "Vector",
+          "identifier": "Vector",
+          "type": "VECTOR",
+          "node": "Mapping",
+          "output": "Vector",
+          "from_type": "VECTOR"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "X",
+          "identifier": "X",
+          "type": "VALUE"
+        },
+        {
+          "name": "Y",
+          "identifier": "Y",
+          "type": "VALUE"
+        },
+        {
+          "name": "Z",
+          "identifier": "Z",
+          "type": "VALUE"
+        }
+      ]
+    },
+    {
+      "key": "Wave/Scale",
+      "type": "ShaderNodeMath",
+      "name": "Scale",
+      "label": "",
+      "props": {
+        "operation": "MULTIPLY",
+        "use_clamp": false
+      },
+      "inputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE",
+          "node": "Separate XYZ",
+          "output": "X",
+          "from_type": "VALUE"
+        },
+        {
+          "name": "Value",
+          "identifier": "Value_001",
+          "type": "VALUE",
+          "value": 3.1415927410125732
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE"
+        }
+      ]
+    },
+    {
+      "key": "Wave/Sine",
+      "type": "ShaderNodeMath",
+      "name": "Sine",
+      "label": "",
+      "props": {
+        "operation": "SINE",
+        "use_clamp": false
+      },
+      "inputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE",
+          "node": "Wave/Scale",
+          "output": "Value",
+          "from_type": "VALUE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE"
+        }
+      ]
+    },
+    {
+      "key": "Wave/Remap",
+      "type": "ShaderNodeMath",
+      "name": "Remap",
+      "label": "",
+      "props": {
+        "operation": "MULTIPLY_ADD",
+        "use_clamp": false
+      },
+      "inputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE",
+          "node": "Wave/Sine",
+          "output": "Value",
+          "from_type": "VALUE"
+        },
+        {
+          "name": "Value",
+          "identifier": "Value_001",
+          "type": "VALUE",
+          "value": 0.5
+        },
+        {
+          "name": "Value",
+          "identifier": "Value_002",
+          "type": "VALUE",
+          "value": 0.5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE"
+        }
+      ]
+    },
+    {
+      "key": "Color Ramp",
+      "type": "ShaderNodeValToRGB",
+      "name": "Color Ramp",
+      "label": "",
+      "props": {
+        "color_ramp": {
+          "color_mode": "RGB",
+          "interpolation": "LINEAR",
+          "hue_interpolation": "NEAR",
+          "elements": [
+            {
+              "position": 0.0,
+              "color": [
+                0.25,
+                0.05000000074505806,
+                0.03999999910593033,
+                1.0
+              ]
+            },
+            {
+              "position": 0.5,
+              "color": [
+                0.8999999761581421,
+                0.800000011920929,
+                0.6000000238418579,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "inputs": [
+        {
+          "name": "Factor",
+          "identifier": "Fac",
+          "type": "VALUE",
+          "node": "Wave/Remap",
+          "output": "Value",
+          "from_type": "VALUE"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Color",
+          "identifier": "Color",
+          "type": "RGBA"
+        },
+        {
+          "name": "Alpha",
+          "identifier": "Alpha",
+          "type": "VALUE"
+        }
+      ]
+    },
+    {
+      "key": "Map Range",
+      "type": "ShaderNodeMapRange",
+      "name": "Map Range",
+      "label": "",
+      "props": {
+        "clamp": true,
+        "interpolation_type": "LINEAR",
+        "data_type": "FLOAT"
+      },
+      "inputs": [
+        {
+          "name": "Value",
+          "identifier": "Value",
+          "type": "VALUE",
+          "node": "Wave/Remap",
+          "output": "Value",
+          "from_type": "VALUE"
+        },
+        {
+          "name": "From Min",
+          "identifier": "From Min",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "From Max",
+          "identifier": "From Max",
+          "type": "VALUE",
+          "value": 1.0
+        },
+        {
+          "name": "To Min",
+          "identifier": "To Min",
+          "type": "VALUE",
+          "value": 0.699999988079071
+        },
+        {
+          "name": "To Max",
+          "identifier": "To Max",
+          "type": "VALUE",
+          "value": 0.30000001192092896
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Result",
+          "identifier": "Result",
+          "type": "VALUE"
+        }
+      ]
+    },
+    {
+      "key": "Bump",
+      "type": "ShaderNodeBump",
+      "name": "Bump",
+      "label": "",
+      "props": {
+        "invert": false
+      },
+      "inputs": [
+        {
+          "name": "Strength",
+          "identifier": "Strength",
+          "type": "VALUE",
+          "value": 0.4000000059604645
+        },
+        {
+          "name": "Distance",
+          "identifier": "Distance",
+          "type": "VALUE",
+          "value": 0.05000000074505806
+        },
+        {
+          "name": "Filter Width",
+          "identifier": "Filter Width",
+          "type": "VALUE",
+          "value": 0.10000000149011612
+        },
+        {
+          "name": "Height",
+          "identifier": "Height",
+          "type": "VALUE",
+          "node": "Wave/Remap",
+          "output": "Value",
+          "from_type": "VALUE"
+        },
+        {
+          "name": "Normal",
+          "identifier": "Normal",
+          "type": "VECTOR",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Normal",
+          "identifier": "Normal",
+          "type": "VECTOR"
+        }
+      ]
+    },
+    {
+      "key": "Principled BSDF",
+      "type": "ShaderNodeBsdfPrincipled",
+      "name": "Principled BSDF",
+      "label": "",
+      "props": {
+        "distribution": "MULTI_GGX",
+        "subsurface_method": "RANDOM_WALK"
+      },
+      "inputs": [
+        {
+          "name": "Base Color",
+          "identifier": "Base Color",
+          "type": "RGBA",
+          "node": "Color Ramp",
+          "output": "Color",
+          "from_type": "RGBA"
+        },
+        {
+          "name": "Metallic",
+          "identifier": "Metallic",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Roughness",
+          "identifier": "Roughness",
+          "type": "VALUE",
+          "node": "Map Range",
+          "output": "Result",
+          "from_type": "VALUE"
+        },
+        {
+          "name": "IOR",
+          "identifier": "IOR",
+          "type": "VALUE",
+          "value": 1.5
+        },
+        {
+          "name": "Alpha",
+          "identifier": "Alpha",
+          "type": "VALUE",
+          "value": 1.0
+        },
+        {
+          "name": "Normal",
+          "identifier": "Normal",
+          "type": "VECTOR",
+          "node": "Bump",
+          "output": "Normal",
+          "from_type": "VECTOR"
+        },
+        {
+          "name": "Diffuse Roughness",
+          "identifier": "Diffuse Roughness",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Subsurface Weight",
+          "identifier": "Subsurface Weight",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Subsurface Radius",
+          "identifier": "Subsurface Radius",
+          "type": "VECTOR",
+          "value": [
+            1.0,
+            0.20000000298023224,
+            0.10000000149011612
+          ]
+        },
+        {
+          "name": "Subsurface Scale",
+          "identifier": "Subsurface Scale",
+          "type": "VALUE",
+          "value": 0.05000000074505806
+        },
+        {
+          "name": "Subsurface Anisotropy",
+          "identifier": "Subsurface Anisotropy",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Specular IOR Level",
+          "identifier": "Specular IOR Level",
+          "type": "VALUE",
+          "value": 0.5
+        },
+        {
+          "name": "Specular Tint",
+          "identifier": "Specular Tint",
+          "type": "RGBA",
+          "value": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Anisotropic",
+          "identifier": "Anisotropic",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Anisotropic Rotation",
+          "identifier": "Anisotropic Rotation",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Tangent",
+          "identifier": "Tangent",
+          "type": "VECTOR",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Transmission Weight",
+          "identifier": "Transmission Weight",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Coat Weight",
+          "identifier": "Coat Weight",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Coat Roughness",
+          "identifier": "Coat Roughness",
+          "type": "VALUE",
+          "value": 0.029999999329447746
+        },
+        {
+          "name": "Coat IOR",
+          "identifier": "Coat IOR",
+          "type": "VALUE",
+          "value": 1.5
+        },
+        {
+          "name": "Coat Tint",
+          "identifier": "Coat Tint",
+          "type": "RGBA",
+          "value": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Coat Normal",
+          "identifier": "Coat Normal",
+          "type": "VECTOR",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Sheen Weight",
+          "identifier": "Sheen Weight",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Sheen Roughness",
+          "identifier": "Sheen Roughness",
+          "type": "VALUE",
+          "value": 0.5
+        },
+        {
+          "name": "Sheen Tint",
+          "identifier": "Sheen Tint",
+          "type": "RGBA",
+          "value": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Emission Color",
+          "identifier": "Emission Color",
+          "type": "RGBA",
+          "value": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Emission Strength",
+          "identifier": "Emission Strength",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Thin Film Thickness",
+          "identifier": "Thin Film Thickness",
+          "type": "VALUE",
+          "value": 0.0
+        },
+        {
+          "name": "Thin Film IOR",
+          "identifier": "Thin Film IOR",
+          "type": "VALUE",
+          "value": 1.3300000429153442
+        }
+      ],
+      "outputs": [
+        {
+          "name": "BSDF",
+          "identifier": "BSDF",
+          "type": "SHADER"
+        }
+      ]
+    },
+    {
+      "key": "Material Output",
+      "type": "ShaderNodeOutputMaterial",
+      "name": "Material Output",
+      "label": "",
+      "props": {
+        "is_active_output": true,
+        "target": "ALL"
+      },
+      "inputs": [
+        {
+          "name": "Surface",
+          "identifier": "Surface",
+          "type": "SHADER",
+          "node": "Principled BSDF",
+          "output": "BSDF",
+          "from_type": "SHADER"
+        },
+        {
+          "name": "Volume",
+          "identifier": "Volume",
+          "type": "SHADER"
+        },
+        {
+          "name": "Displacement",
+          "identifier": "Displacement",
+          "type": "VECTOR",
+          "value": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Thickness",
+          "identifier": "Thickness",
+          "type": "VALUE",
+          "value": 0.0
+        }
+      ],
+      "outputs": []
+    }
+  ],
+  "warnings": []
+}

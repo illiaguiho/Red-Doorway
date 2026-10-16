@@ -1,0 +1,14 @@
+{
+  "albedo": [1.0, 1.0, 1.0, 1.0],
+  "albedoMap": "",
+  "emissive": [0.0, 0.0, 0.0],
+  "emissiveIntensity": 1.0,
+  "emissiveMap": "",
+  "metalRoughMap": "",
+  "metallic": 0.0,
+  "normalMap": "",
+  "normalStrength": 1.0,
+  "roughness": 0.5,
+  "tiling": [1.0, 1.0],
+  "surfaceShader": "Assets/Shaders/Stripes.surface.glsl"
+}

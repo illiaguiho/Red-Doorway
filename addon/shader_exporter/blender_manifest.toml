@@ -1,0 +1,12 @@
+schema_version = "1.0.0"
+
+id = "shader_exporter"
+version = "0.0.1"
+name = "Shader Exporter"
+tagline = "Export material node trees for game engines"
+maintainer = "Elivi Guiho"
+type = "add-on"
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
